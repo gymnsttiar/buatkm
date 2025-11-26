@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Tik</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fef7f9 0%, #fceef1 100%);
+            color: #555;
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #ffd1dc 0%, #ffb6c1 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.3);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+            animation: headerEntrance 1.2s ease 0.3s forwards;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #8a4b76;
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            letter-spacing: 1px;
+            position: relative;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #8a4b76;
+            opacity: 0.9;
+            position: relative;
+            font-weight: 300;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .message-section {
+            margin-bottom: 50px;
+        }
+
+        .message-block {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            border-left: 4px solid #ffb6c1;
+            opacity: 0;
+            transform: translateX(-50px) rotate(-2deg);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-block:nth-child(even) {
+            transform: translateX(50px) rotate(2deg);
+        }
+
+        .message-block.visible {
+            opacity: 1;
+            transform: translateX(0) rotate(0deg);
+        }
+
+        .message-block p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.7;
+            font-weight: 400;
+            position: relative;
+            z-index: 2;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.6s ease 0.3s;
+        }
+
+        .message-block.visible p {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Animasi tipis di dalam message block */
+        .message-decoration {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.15;
+            font-size: 1rem;
+        }
+
+        /* Posisi dekorasi untuk setiap message block */
+        .message-block:nth-child(1) .decoration-1 { top: 10%; left: 5%; animation: floatSoft1 20s infinite linear; }
+        .message-block:nth-child(1) .decoration-2 { top: 20%; right: 8%; animation: floatSoft2 25s infinite linear; }
+        .message-block:nth-child(1) .decoration-3 { bottom: 15%; left: 15%; animation: floatSoft3 22s infinite linear; }
+
+        .message-block:nth-child(2) .decoration-1 { top: 15%; right: 10%; animation: floatSoft4 24s infinite linear; }
+        .message-block:nth-child(2) .decoration-2 { bottom: 20%; left: 8%; animation: floatSoft5 26s infinite linear; }
+        .message-block:nth-child(2) .decoration-3 { top: 60%; right: 15%; animation: floatSoft6 21s infinite linear; }
+
+        .message-block:nth-child(3) .decoration-1 { top: 25%; left: 10%; animation: floatSoft7 23s infinite linear; }
+        .message-block:nth-child(3) .decoration-2 { bottom: 25%; right: 12%; animation: floatSoft8 27s infinite linear; }
+        .message-block:nth-child(3) .decoration-3 { top: 70%; left: 20%; animation: floatSoft1 25s infinite linear; }
+
+        .message-block:nth-child(4) .decoration-1 { top: 30%; right: 8%; animation: floatSoft2 22s infinite linear; }
+        .message-block:nth-child(4) .decoration-2 { bottom: 30%; left: 10%; animation: floatSoft3 26s infinite linear; }
+        .message-block:nth-child(4) .decoration-3 { top: 80%; right: 18%; animation: floatSoft4 24s infinite linear; }
+
+        .gift-section {
+            text-align: center;
+            padding: 40px 25px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            margin-top: 40px;
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gift-section.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Dekorasi untuk gift section */
+        .gift-decoration {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.15;
+            font-size: 1rem;
+        }
+
+        .gift-section .decoration-1 { top: 15%; left: 10%; animation: floatSoft5 28s infinite linear; }
+        .gift-section .decoration-2 { top: 25%; right: 12%; animation: floatSoft6 30s infinite linear; }
+        .gift-section .decoration-3 { bottom: 20%; left: 15%; animation: floatSoft7 26s infinite linear; }
+        .gift-section .decoration-4 { bottom: 30%; right: 8%; animation: floatSoft8 32s infinite linear; }
+
+        .gift-title {
+            color: #8a4b76;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.6s ease 0.2s;
+        }
+
+        .gift-section.visible .gift-title {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .pizza-container {
+            max-width: 300px;
+            margin: 0 auto 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 2;
+            transform: scale(0.8) rotate(-5deg);
+            opacity: 0;
+            transition: all 0.8s ease 0.4s;
+        }
+
+        .gift-section.visible .pizza-container {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+        }
+
+        .pizza-container:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .pizza-image {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pizza-image img {
+            width: 85%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .pizza-container:hover .pizza-image img {
+            transform: scale(1.05);
+        }
+
+        .gift-text {
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.6s ease 0.6s;
+        }
+
+        .gift-section.visible .gift-text {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.6s ease 0.8s;
+        }
+
+        .gift-section.visible .buttons {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transform: scale(1);
+        }
+
+        .btn-thanks {
+            background: linear-gradient(135deg, #ffb6c1 0%, #ff99ac 100%);
+            color: white;
+            box-shadow: 0 6px 15px rgba(255, 182, 193, 0.4);
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #20b858 100%);
+            color: white;
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-thanks:hover {
+            background: linear-gradient(135deg, #ff99ac 0%, #ff6a88 100%);
+        }
+
+        .btn-whatsapp:hover {
+            background: linear-gradient(135deg, #20b858 0%, #1a9e4a 100%);
+        }
+
+        /* FOOTER YANG DIPERBAIKI */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #8a4b76;
+            font-size: 1rem;
+            margin-top: 60px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffb6c1, transparent);
+        }
+
+        .footer p {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        /* Animasi yang sangat halus */
+        @keyframes headerEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+            70% {
+                transform: translateY(-10px) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes floatSoft1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(5px, 3px) rotate(10deg); }
+        }
+
+        @keyframes floatSoft2 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-4px, 2px) rotate(-8deg); }
+        }
+
+        @keyframes floatSoft3 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(3px, -2px) rotate(12deg); }
+        }
+
+        @keyframes floatSoft4 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-3px, 4px) rotate(-15deg); }
+        }
+
+        @keyframes floatSoft5 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(2px, 5px) rotate(8deg); }
+        }
+
+        @keyframes floatSoft6 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-5px, -3px) rotate(-12deg); }
+        }
+
+        @keyframes floatSoft7 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(4px, -4px) rotate(15deg); }
+        }
+
+        @keyframes floatSoft8 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-2px, 3px) rotate(-10deg); }
+        }
+
+        /* Floating hearts background */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: floatHearts 8s linear infinite;
+        }
+
+        .heart:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .heart:nth-child(2) { left: 20%; animation-delay: 1s; }
+        .heart:nth-child(3) { left: 30%; animation-delay: 2s; }
+        .heart:nth-child(4) { left: 40%; animation-delay: 3s; }
+        .heart:nth-child(5) { left: 50%; animation-delay: 4s; }
+        .heart:nth-child(6) { left: 60%; animation-delay: 5s; }
+        .heart:nth-child(7) { left: 70%; animation-delay: 6s; }
+        .heart:nth-child(8) { left: 80%; animation-delay: 7s; }
+
+        @keyframes floatHearts {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #ffb6c1, #ff6a88);
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        /* Media queries */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header {
+                padding: 60px 20px;
+            }
+            
+            .message-block {
+                padding: 25px;
+                transform: translateY(30px);
+            }
+            
+            .message-block:nth-child(even) {
+                transform: translateY(30px);
+            }
+            
+            .gift-title {
+                font-size: 1.6rem;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                padding: 12px 25px;
+            }
+
+            .footer {
+                padding: 30px 20px;
+                margin-top: 40px;
+            }
+
+            /* Kurangi jumlah dekorasi di mobile */
+            .message-block .decoration-3,
+            .gift-section .decoration-4 {
+                display: none;
+            }
+
+            /* Kurangi jumlah hearts di mobile */
+            .heart:nth-child(n+5) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header p {
+                font-size: 1.1rem;
+            }
+            
+            .message-block p {
+                font-size: 1rem;
+            }
+
+            .footer p {
+                font-size: 1rem;
+            }
+
+            /* Kurangi lagi dekorasi di mobile kecil */
+            .message-block .decoration-2,
+            .gift-section .decoration-3 {
+                display: none;
+            }
+
+            /* Kurangi lagi hearts di mobile kecil */
+            .heart:nth-child(n+4) {
+                display: none;
+            }
+        }
+
+        /* Nonaktifkan animasi untuk pengguna yang prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Floating hearts background -->
+    <div class="floating-hearts">
+        <div class="heart">❤️</div>
+        <div class="heart">💖</div>
+        <div class="heart">💕</div>
+        <div class="heart">💗</div>
+        <div class="heart">💓</div>
+        <div class="heart">💞</div>
+        <div class="heart">💝</div>
+        <div class="heart">❤️</div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Untuk</h1>
+            <h1>Nurma Fatikhah Nur Rachmawati</h1>
+            <p>Sebuah Permintaan Maaf Tulus dari Hati</p>
+        </div>
+        
+        <div class="content">
+            <div class="message-section">
+                <div class="message-block">
+                    <!-- Dekorasi untuk block pertama -->
+                    <div class="message-decoration decoration-1">🌸</div>
+                    <div class="message-decoration decoration-2">🌷</div>
+                    <div class="message-decoration decoration-3">💮</div>
+                    
+                    <p>Hai Tik, gimana kabar dan kondisinya hari ini? Semoga kamu nggak terlalu capek atau bete sama aku. Aku tahu aku baru saja bikin kesalahan besar dan mungkin bikin kamu pengen lempar aku ke jurang, benyek benyek tubuhku, geprek tubuhku, gites tubuhku, cakar cakar tubuhku dan semacamnya.</p>
+                </div>
+                
+                <div class="message-block">
+                    <!-- Dekorasi untuk block kedua -->
+                    <div class="message-decoration decoration-1">🌼</div>
+                    <div class="message-decoration decoration-2">🏵️</div>
+                    <div class="message-decoration decoration-3">🌺</div>
+                    
+                    <p>Aku ingin minta maaf dari hati yang paling dalam atas semua kesalahan yang aku buat. Aku sadar aku salah, dan aku benar benar menyesal. Aku ingin kamu tahu bahwa aku sungguh sungguh ingin berubah dan memperbaiki semuanya pelan pelan. Aku ingin menjadi seseorang yang bisa kamu percaya lagi, tempat kamu bercerita tanpa takut, dan seseorang yang membuatmu merasa aman saat pulang, tanpa rasa ragu sedikit pun.</p>
+                </div>
+                
+                <div class="message-block">
+                    <!-- Dekorasi untuk block ketiga -->
+                    <div class="message-decoration decoration-1">🌷</div>
+                    <div class="message-decoration decoration-2">🌸</div>
+                    <div class="message-decoration decoration-3">💮</div>
+                    
+                    <p>Aku juga mau bilang bahwa aku akan berusaha bikin kita bisa ketawa bareng lagi. Tapi di saat yang sama, aku nggak akan lupa buat belajar dari kesalahanku, supaya aku nggak bikin kamu sedih lagi. Terima kasih sudah mau membaca ini tik. Semoga dari semua yang terjadi, kamu masih bisa tersenyum sedikit. Aku sayang sama kamu, dan aku akan terus berusaha jadi versi terbaik untuk kamu. Aku bener bener minta maaf tik, dan aku lagi berusaha memperbaiki semuanya, terutama diriku sendiri.</p>
+                </div>
+                
+                <div class="message-block">
+                    <!-- Dekorasi untuk block keempat -->
+                    <div class="message-decoration decoration-1">🌼</div>
+                    <div class="message-decoration decoration-2">🏵️</div>
+                    <div class="message-decoration decoration-3">🌺</div>
+                    
+                    <p>Tiikk, doaku untukmu aku memohon kepada Allah agar hidupmu selalu dijaga dengan segala kebaikan, semoga Allah menjaga hatimu dari luka, menenangkan batinmu ketika dunia terasa berat. Aku berharap setiap langkah yang kamu ambil diberikan kemudahan, setiap sedihmu diberi pelukan ketenangan dari Allah, dan setiap harapanmu diberi jalan untuk menjadi nyata. Dan jika Allah mengizinkan aku tetap berada di hidupmu, aku ingin kehadiranku menjadi tempat kamu bersandar ketika lelah, seseorang yang tidak hanya menemani tawa dan senyummu, tapi juga menjadi ruang paling aman saat hatimu rapuh, agar kamu tidak pernah merasa menghadapi dunia ini sendirian. Aku sayang sama kamu tika, dan aku gamau bikin kamu sakit hati lagi. Iam here tik, kalau kamu butuh apapun itu something else aku siap kapan pun.</p>
+                </div>
+            </div>
+            
+            <div class="gift-section">
+                <!-- Dekorasi untuk gift section -->
+                <div class="gift-decoration decoration-1">🌸</div>
+                <div class="gift-decoration decoration-2">🌷</div>
+                <div class="gift-decoration decoration-3">🌼</div>
+                <div class="gift-decoration decoration-4">💮</div>
+                
+                <h2 class="gift-title">Sebagai Tanda Terima Kasih Karena Sudah Meluangkan Waktunya Untuk Membaca</h2>
+                <div class="pizza-container">
+                    <div class="pizza-image">
+                        <img src="aset/scscscsc.png" alt="Pizza Lezat">
+                    </div>
+                </div>
+                <p class="gift-text">Silahkan klik button WhatsApp dibawah.</p>
+                
+                <div class="buttons">
+                    <button class="btn btn-thanks">
+                        <i class="fas fa-heart"></i>
+                        Terima Kasih Sudah Membaca
+                    </button>
+                    <a href="https://wa.me/6285157882092?text=ACC%2C%20Bisa%20dikirim%20ke%20rumah%20sekarang" class="btn btn-whatsapp" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FOOTER YANG SUDAH DIPERBAIKI -->
+        <div class="footer">
+            <p>Dibuat dengan penuh kasih sayang ❤️ dan penyesalan yang begitu besar</p>
+        </div>
+    </div>
+
+    <script>
+        // Progress bar
+        function updateProgressBar() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+        }
+
+        window.addEventListener('scroll', updateProgressBar);
+
+        // Optimized scroll animation dengan debouncing
+        let scrollTimeout;
+
+        function checkVisibility() {
+            const elements = document.querySelectorAll('.message-block, .gift-section, .footer');
+            const windowHeight = window.innerHeight;
+            
+            elements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const isVisible = rect.top <= windowHeight * 0.85 && rect.bottom >= 0;
+                
+                if (isVisible) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        // Debounced scroll handler
+        function handleScroll() {
+            if (scrollTimeout) {
+                cancelAnimationFrame(scrollTimeout);
+            }
+            scrollTimeout = requestAnimationFrame(checkVisibility);
+        }
+
+        // Initial check dan event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            checkVisibility();
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            // Preload gambar
+            const img = new Image();
+            img.src = 'aset/scscscsc.png';
+        });
+
+        // Tombol terima kasih
+        document.querySelector('.btn-thanks').addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+                alert('Terima kasih sudah membaca dan meluangkan waktunya tika ❤️');
+            }, 150);
+        });
+
+        // Header animation setelah load
+        window.addEventListener('load', function() {
+            document.querySelector('.header').style.opacity = '1';
+            document.querySelector('.header').style.transform = 'translateY(0) scale(1)';
+        });
+
+        // Parallax effect untuk floating hearts
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            document.querySelector('.floating-hearts').style.transform = `translateY(${rate}px)`;
+        });
+
+        // Force check footer visibility setelah load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                checkVisibility();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
